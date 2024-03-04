@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick (View view) {
 
-//                checkData();
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i);
+                checkData();
+//                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+//                startActivity(i);
             }
         });
     }
@@ -61,16 +61,17 @@ public class MainActivity extends AppCompatActivity {
             t.show();
             isValue = false;
         }
-        if (isEmpty(lastName) == false) {
-            lastName.setError("Last name is required");
-            isValue = false;
-        }
+//        false: không bắt buộc
+//        if (isEmpty(lastName) == false) {
+//            lastName.setError("Last name is required");
+//            isValue = false;
+//        }
         if (isEmail(email) == false) {
             email.setError("Enter valid email !");
             isValue = false;
         }
         if (isValue) {
-            Intent i = new Intent(MainActivity.this, Login.class);
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
         }
 

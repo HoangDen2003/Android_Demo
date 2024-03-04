@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         if (isValid) {
             String valueUserName = editUserName.getText().toString();
             String valuePassWord = editPassword.getText().toString();
-            if (valueUserName.equals("test@test.com") && valuePassWord.equals("password1234")) {
+            if (valueUserName.equals("ha@ha.com") && valuePassWord.equals("pw1234")) {
                 Intent i = new Intent(LoginActivity.this, Redirect.class);
                 startActivity(i);
                 this.finish();
