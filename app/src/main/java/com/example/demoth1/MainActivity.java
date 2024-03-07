@@ -15,8 +15,10 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText firstName, lastName, postAddress, email;
+    EditText firstName, lastName, password, email;
     Button btnRegister;
+
+    MyDataBaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,21 +27,17 @@ public class MainActivity extends AppCompatActivity {
 
         firstName = findViewById(R.id.firstName);
         lastName = findViewById(R.id.lastName);
-        postAddress = findViewById(R.id.postAddress);
+        password = findViewById(R.id.password);
         email = findViewById(R.id.email);
         btnRegister = findViewById(R.id.btnRegister);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view) {
-
+                myDB = new MyDataBaseHelper(MainActivity.this);
                 checkData();
-//                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-//                startActivity(i);
             }
         });
-    }
-    private void startActivities(Intent i) {
     }
 
     // dinh dang email
@@ -71,10 +69,18 @@ public class MainActivity extends AppCompatActivity {
             isValue = false;
         }
         if (isValue) {
-            Intent i = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(i);
+            boolean isConnect = false;
+            if (addData(isConnect)) {
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
         }
-
     }
-
+    boolean addData(boolean isConnect) {
+        isConnect = myDB.addUser(firstName.getText().toString().trim(),
+                lastName.getText().toString().trim(),
+                password.getText().toString().trim(),
+                email.getText().toString().trim(), isConnect);
+        return isConnect;
+    }
 }
