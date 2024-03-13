@@ -68,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
             email.setError("Enter valid email !");
             isValue = false;
         }
+
+        if (myDB.checkRegisterEmail(email.getText().toString().trim()) == false) {
+            Toast t = Toast.makeText(this, "Email already exists !", Toast.LENGTH_LONG);
+            t.show();
+            isValue = false;
+        }
+
         if (isValue) {
             boolean isConnect = false;
             if (addData(isConnect)) {

@@ -1,6 +1,7 @@
 package com.example.demoth1;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.text.TextUtils;
@@ -11,10 +12,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 // import com.example.demoth1.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText editUserName, editPassword;
+    EditText loginUserName, loginPassword;
     Button btnLogin, btnRegister;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +28,12 @@ public class LoginActivity extends AppCompatActivity {
 
         setUp();
         setupListeners();
+
     }
 
     public void setUp() {
-        editUserName = findViewById(R.id.editUserName);
-        editPassword = findViewById(R.id.editPassWord);
+        loginUserName = findViewById(R.id.loginUserName);
+        loginPassword = findViewById(R.id.loginPassWord);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
     }
@@ -37,6 +43,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                String strUN = loginUserName.getText().toString();
+                String strPW = loginUserName.getText().toString();
+
                 checkUserName();
             }
         });
@@ -45,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent m = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(m);
+
             }
         });
     }
@@ -52,30 +62,35 @@ public class LoginActivity extends AppCompatActivity {
     public void checkUserName() {
         boolean isValid = true;
 
-        if (isEmpty(editUserName)) {
-            editUserName.setError("You must enter username to login !");
+        if (isEmpty(loginUserName)) {
+            loginUserName.setError("You must enter username to login !");
             isValid = false;
         } else {
-            if (!isEmail(editUserName)) {
-                editUserName.setError("Enter valid Email !");
+            if (!isEmail(loginUserName)) {
+                loginUserName.setError("Enter valid Email !");
                 isValid = false;
             }
-            if (isEmpty(editPassword)) {
-                editPassword.setError("You must enter password to login");
+            if (isEmpty(loginPassword)) {
+                loginPassword.setError("You must enter password to login");
                 isValid = false;
             } else {
-                if (editPassword.toString().length() < 4) {
-                    editPassword.setError("Password must at to least 4 chars long");
+                if (loginPassword.toString().length() < 4) {
+                    loginPassword.setError("Password must at to least 4 chars long");
                     isValid = false;
                 }
             }
         }
 
         if (isValid) {
-            String valueUserName = editUserName.getText().toString();
-            String valuePassWord = editPassword.getText().toString();
-            if (valueUserName.equals("ha@ha.com") && valuePassWord.equals("pw1234")) {
-                Intent i = new Intent(LoginActivity.this, Redirect.class);
+            String valueUserName = loginUserName.getText().toString();
+            String valuePassWord = loginPassword.getText().toString();
+
+            MyDataBaseHelper myDB = new MyDataBaseHelper(LoginActivity.this);
+            Cursor cursor = myDB.getUserByEmail(valueUserName, valuePassWord);
+
+            if (cursor.getCount() == 1) {
+                Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(LoginActivity.this, DictionaryActivity.class);
                 startActivity(i);
                 this.finish();
             } else {
@@ -94,4 +109,5 @@ public class LoginActivity extends AppCompatActivity {
         CharSequence str = text.getText().toString();
         return TextUtils.isEmpty(str);
     }
+
 }
