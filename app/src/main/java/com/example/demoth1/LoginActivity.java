@@ -52,7 +52,10 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent m = new Intent(LoginActivity.this, MainActivity.class);
+//                Intent m = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(m);
+
+                Intent m = new Intent(LoginActivity.this, AuthGoogleActivity.class);
                 startActivity(m);
 
             }
